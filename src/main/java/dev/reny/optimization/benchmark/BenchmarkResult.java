@@ -6,7 +6,7 @@ import dev.reny.optimization.profiler.ProfilerSnapshot;
 /** Immutable measured benchmark result ready for local export. */
 public final class BenchmarkResult {
 
-    public static final int SCHEMA_VERSION = 1;
+    public static final int SCHEMA_VERSION = 2;
 
     private final String runId;
     private final BenchmarkScenario scenario;
@@ -22,12 +22,14 @@ public final class BenchmarkResult {
     private final DurationSeriesSnapshot ticks;
     private final ProfilerSnapshot.RuntimeSnapshot runtimeStart;
     private final ProfilerSnapshot.RuntimeSnapshot runtimeEnd;
+    private final boolean captureComplete;
 
     BenchmarkResult(String runId, BenchmarkScenario scenario, BenchmarkEnvironment environment,
         long warmupStartedAtMillis, long measurementStartedAtMillis, long completedAtMillis,
         long configuredWarmupMillis, long configuredMeasurementMillis, long actualWarmupNanos,
         long actualMeasurementNanos, DurationSeriesSnapshot frames, DurationSeriesSnapshot ticks,
-        ProfilerSnapshot.RuntimeSnapshot runtimeStart, ProfilerSnapshot.RuntimeSnapshot runtimeEnd) {
+        ProfilerSnapshot.RuntimeSnapshot runtimeStart, ProfilerSnapshot.RuntimeSnapshot runtimeEnd,
+        boolean captureComplete) {
         this.runId = runId;
         this.scenario = scenario;
         this.environment = environment;
@@ -42,6 +44,7 @@ public final class BenchmarkResult {
         this.ticks = ticks;
         this.runtimeStart = runtimeStart;
         this.runtimeEnd = runtimeEnd;
+        this.captureComplete = captureComplete;
     }
 
     public String getRunId() {
@@ -98,5 +101,9 @@ public final class BenchmarkResult {
 
     public ProfilerSnapshot.RuntimeSnapshot getRuntimeEnd() {
         return runtimeEnd;
+    }
+
+    public boolean isCaptureComplete() {
+        return captureComplete;
     }
 }

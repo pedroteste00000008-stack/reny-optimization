@@ -1,5 +1,32 @@
+import org.gradle.language.jvm.tasks.ProcessResources
+import org.gradle.api.tasks.WriteProperties
+
 plugins {
     id("com.gtnewhorizons.gtnhconvention")
+}
+
+val generatedRenyBuildInfo = layout.buildDirectory.file("generated-resources/reny/reny-build.properties")
+val explicitRenyCommitSha = providers.environmentVariable("RENY_COMMIT_SHA")
+    .orElse(providers.environmentVariable("GITHUB_SHA"))
+    .map(String::trim)
+    .filter { it.isNotEmpty() }
+val discoveredRenyCommitSha = providers.exec {
+    commandLine("git", "rev-parse", "HEAD")
+}.standardOutput.asText
+    .map(String::trim)
+    .filter { it.isNotEmpty() }
+val renyCommitSha = explicitRenyCommitSha
+    .orElse(discoveredRenyCommitSha)
+    .orElse("unknown")
+
+val writeRenyBuildInfo = tasks.register<WriteProperties>("writeRenyBuildInfo") {
+    destinationFile.set(generatedRenyBuildInfo)
+    property("commit_sha", renyCommitSha)
+}
+
+tasks.named<ProcessResources>("processResources") {
+    dependsOn(writeRenyBuildInfo)
+    from(generatedRenyBuildInfo)
 }
 
 // The project deliberately uses dependency-free executable self-tests instead of a JUnit engine.
@@ -40,6 +67,14 @@ tasks.register<JavaExec>("benchmarkHarnessSelfTest") {
     mainClass.set("dev.reny.optimization.profiler.BenchmarkHarnessSelfTest")
 }
 
+tasks.register<JavaExec>("benchmarkControllerSelfTest") {
+    group = "verification"
+    description = "Runs the dependency-free benchmark controller/state integration self-test suite."
+    dependsOn(tasks.named("testClasses"))
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("dev.reny.optimization.benchmark.BenchmarkControllerSelfTest")
+}
+
 tasks.register<JavaExec>("profilerOverheadBenchmark") {
     group = "verification"
     description = "Runs the informational internal-profiler overhead microbenchmark."
@@ -49,5 +84,10 @@ tasks.register<JavaExec>("profilerOverheadBenchmark") {
 }
 
 tasks.named("check") {
-    dependsOn("patchRegistrySelfTest", "compatibilitySelfTest", "profilerSelfTest", "benchmarkHarnessSelfTest")
+    dependsOn(
+        "patchRegistrySelfTest",
+        "compatibilitySelfTest",
+        "profilerSelfTest",
+        "benchmarkHarnessSelfTest",
+        "benchmarkControllerSelfTest")
 }

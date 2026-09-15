@@ -1,0 +1,234 @@
+[
+  {
+    "attempt_id": "attempt-1789254864976-A-BENCH-01",
+    "configuration": "A",
+    "reason": "timeout waiting for Minecraft process to start",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789254961760-A-BENCH-01",
+    "configuration": "A",
+    "reason": "timeout waiting for Minecraft window to appear",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789255125314-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789255331248-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256140050-A-BENCH-01",
+    "configuration": "A",
+    "reason": "export directory missing: /home/pedro/Documents/curseforge/minecraft/Instances/Reny Optimization/benchmarks/results/BENCH-01/30d88b554addd4a610d6fe1efd319bda4b677635/run-1789256228800-ca308a48\n[18:40:08] [Server thread/INFO]: [CHAT] Reny benchmark COMPLETE: /home/pedro/Documents/curseforge/minecraft/Instances/Reny Optimization/benchmarks/results/BENCH-01/30d88b554addd4a610d6fe1efd319bda4b677635/run-1789256228800-ca308a48",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256411410-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256468406-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256468749-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256469079-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256469428-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256469775-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789256575553-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "manual-1789257237901-A-BENCH-01",
+    "configuration": "A",
+    "reason": "invalid: command helper sent Escape after Return and opened the pause menu; timing/export exists but the run is contaminated",
+    "result_dir": "benchmarks/results/BENCH-01/30d88b554addd4a610d6fe1efd319bda4b677635/run-1789257239052-31bab0d6",
+    "run_id": "run-1789257239052-31bab0d6",
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789257979222-A-BENCH-01",
+    "configuration": "A",
+    "reason": "timeout waiting for BENCH-01 WARMUP transition",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789258109254-A-BENCH-01",
+    "configuration": "A",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789258242678-A-BENCH-01",
+    "configuration": "A",
+    "reason": "timeout waiting for complete export files for run-1789258275996-04c1f920",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789262717809-B-BENCH-03",
+    "configuration": "B",
+    "reason": "timeout waiting for BENCH-03 WARMUP transition after focus fallback",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-03"
+  },
+  {
+    "attempt_id": "attempt-1789266490069-C-BENCH-01",
+    "configuration": "C",
+    "reason": "timeout waiting for BENCH-01 WARMUP transition after focus fallback",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789266834747-C-BENCH-01",
+    "configuration": "C",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789266903674-C-BENCH-01",
+    "configuration": "C",
+    "reason": "Command '['xdotool', 'mousemove', '--sync', '1416', '179']' timed out after 10 seconds",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789267247662-C-BENCH-01",
+    "configuration": "C",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-01"
+  },
+  {
+    "attempt_id": "attempt-1789268481452-C-BENCH-02",
+    "configuration": "C",
+    "reason": "timeout waiting for entry into New World after retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-02"
+  },
+  {
+    "attempt_id": "attempt-1789269048889-C-BENCH-02",
+    "configuration": "C",
+    "reason": "stop requested",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-02"
+  },
+  {
+    "attempt_id": "attempt-1789269121629-C-BENCH-02",
+    "configuration": "C",
+    "reason": "timeout waiting for entry into New World after retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-02"
+  },
+  {
+    "attempt_id": "attempt-1789288017481-D-BENCH-06",
+    "configuration": "D",
+    "reason": "timeout waiting for Minecraft process to start after Play retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-06"
+  },
+  {
+    "attempt_id": "attempt-1789288199820-D-BENCH-06",
+    "configuration": "D",
+    "reason": "timeout waiting for Minecraft process to start after Play retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-06"
+  },
+  {
+    "attempt_id": "attempt-1789288403152-D-BENCH-06",
+    "configuration": "D",
+    "reason": "timeout waiting for Minecraft process to start after Play retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-06"
+  },
+  {
+    "attempt_id": "attempt-1789288585532-D-BENCH-06",
+    "configuration": "D",
+    "reason": "timeout waiting for Minecraft process to start after Play retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-06"
+  },
+  {
+    "attempt_id": "attempt-1789288767811-D-BENCH-06",
+    "configuration": "D",
+    "reason": "timeout waiting for Minecraft process to start after Play retry",
+    "result_dir": null,
+    "run_id": null,
+    "scenario": "BENCH-06"
+  }
+]

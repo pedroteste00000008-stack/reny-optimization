@@ -26,6 +26,8 @@ public final class InternalProfiler {
     private final AtomicLong activeTasks = new AtomicLong();
     private final LongAdder submittedTasks = new LongAdder();
     private final LongAdder completedTasks = new LongAdder();
+    private final int captureMaxSamples;
+    private final Object captureMonitor = new Object();
 
     private long frameSequence;
     private long tickSequence;
@@ -33,10 +35,19 @@ public final class InternalProfiler {
     private volatile long currentTickId;
     private volatile File automaticExportDirectory;
     private volatile boolean shutdownHookInstalled;
+    private volatile ProfilerCapture activeCapture;
 
-    InternalProfiler(int frameCapacity, int tickCapacity) {
+    public InternalProfiler(int frameCapacity, int tickCapacity) {
+        this(frameCapacity, tickCapacity, ProfilerCapture.DEFAULT_MAX_SAMPLES);
+    }
+
+    InternalProfiler(int frameCapacity, int tickCapacity, int captureMaxSamples) {
         frames = new DurationSeries(frameCapacity);
         ticks = new DurationSeries(tickCapacity);
+        if (captureMaxSamples <= 0) {
+            throw new IllegalArgumentException("captureMaxSamples must be positive");
+        }
+        this.captureMaxSamples = captureMaxSamples;
         for (int i = 0; i < frameThresholdCounts.length; i++) {
             frameThresholdCounts[i] = new LongAdder();
         }
@@ -56,6 +67,41 @@ public final class InternalProfiler {
     public void initialize(File automaticExportDirectory) {
         this.automaticExportDirectory = automaticExportDirectory;
         installShutdownHook();
+    }
+
+    /** Starts the append-only capture used by a formal benchmark session. */
+    public ProfilerCapture beginBenchmarkCapture() {
+        synchronized (captureMonitor) {
+            if (activeCapture != null) {
+                throw new IllegalStateException("A benchmark profiler capture is already active");
+            }
+            ProfilerCapture capture = new ProfilerCapture(captureMaxSamples);
+            activeCapture = capture;
+            return capture;
+        }
+    }
+
+    /** Stops a formal capture and returns every retained sample, subject to its explicit overflow gate. */
+    public ProfilerCapture.Snapshot finishBenchmarkCapture(ProfilerCapture capture) {
+        synchronized (captureMonitor) {
+            if (capture == null || activeCapture != capture) {
+                throw new IllegalStateException("Benchmark profiler capture is not active");
+            }
+            activeCapture = null;
+            return capture.closeAndSnapshot();
+        }
+    }
+
+    /** Discards a capture when a benchmark is cancelled or fails before export. */
+    public void discardBenchmarkCapture(ProfilerCapture capture) {
+        synchronized (captureMonitor) {
+            if (activeCapture == capture) {
+                activeCapture = null;
+                if (capture != null) {
+                    capture.close();
+                }
+            }
+        }
     }
 
     public long beginFrame() {
@@ -87,7 +133,7 @@ public final class InternalProfiler {
             return;
         }
         long duration = elapsedSince(startNanos);
-        ticks.record(currentTickId, currentFrameId, duration);
+        recordTickDurationNanos(currentTickId, currentFrameId, duration);
     }
 
     public long startSection(ProfilerSection section) {
@@ -172,17 +218,37 @@ public final class InternalProfiler {
         return output;
     }
 
-    void recordFrameDurationNanos(long frameId, long tickId, long durationNanos) {
+    boolean recordFrameDurationNanos(long frameId, long tickId, long durationNanos) {
         frames.record(frameId, tickId, durationNanos);
+        ProfilerCapture capture = activeCapture;
+        boolean captured = false;
+        if (capture != null) {
+            synchronized (captureMonitor) {
+                if (activeCapture == capture) {
+                    captured = capture.recordFrame(frameId, tickId, durationNanos);
+                }
+            }
+        }
         for (int i = 0; i < FRAME_THRESHOLDS_NANOS.length; i++) {
             if (durationNanos > FRAME_THRESHOLDS_NANOS[i]) {
                 frameThresholdCounts[i].increment();
             }
         }
+        return captured;
     }
 
-    void recordTickDurationNanos(long tickId, long frameId, long durationNanos) {
+    boolean recordTickDurationNanos(long tickId, long frameId, long durationNanos) {
         ticks.record(tickId, frameId, durationNanos);
+        ProfilerCapture capture = activeCapture;
+        boolean captured = false;
+        if (capture != null) {
+            synchronized (captureMonitor) {
+                if (activeCapture == capture) {
+                    captured = capture.recordTick(tickId, frameId, durationNanos);
+                }
+            }
+        }
+        return captured;
     }
 
     private static long elapsedSince(long startNanos) {

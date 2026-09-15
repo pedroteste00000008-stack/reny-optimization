@@ -41,10 +41,10 @@ public final class ProfilerExporter {
             out.println("  \"current_frame_id\": " + snapshot.getCurrentFrameId() + ',');
             out.println("  \"current_tick_id\": " + snapshot.getCurrentTickId() + ',');
             out.println("  \"frame\": {");
-            writeStatistics(out, frameStats, "    ");
+            writeStatistics(out, snapshot.getFrames(), frameStats, "    ");
             out.println("  },");
             out.println("  \"tick\": {");
-            writeStatistics(out, tickStats, "    ");
+            writeStatistics(out, snapshot.getTicks(), tickStats, "    ");
             out.println("  },");
             out.println("  \"frame_threshold_counts\": {");
             out.println("    \"gt_16_67_ms\": " + snapshot.getFrameThresholdCount(0) + ',');
@@ -69,8 +69,11 @@ public final class ProfilerExporter {
         }
     }
 
-    private static void writeStatistics(PrintWriter out, DurationStatistics statistics, String indent) {
+    private static void writeStatistics(PrintWriter out, DurationSeriesSnapshot series, DurationStatistics statistics,
+        String indent) {
         out.println(indent + "\"sample_count\": " + statistics.getSampleCount() + ',');
+        out.println(indent + "\"total_recorded_samples\": " + series.getTotalSamples() + ',');
+        out.println(indent + "\"dropped_samples\": " + series.getDroppedSamples() + ',');
         out.println(indent + "\"min_ms\": " + millis(statistics.getMinNanos()) + ',');
         out.println(indent + "\"mean_ms\": " + millis(statistics.getMeanNanos()) + ',');
         out.println(indent + "\"max_ms\": " + millis(statistics.getMaxNanos()) + ',');

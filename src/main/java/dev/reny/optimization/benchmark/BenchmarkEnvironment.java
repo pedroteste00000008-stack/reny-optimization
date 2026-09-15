@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -111,6 +113,10 @@ public final class BenchmarkEnvironment {
         if (explicit != null) {
             return explicit;
         }
+        String packaged = readPackagedCommitSha();
+        if (packaged != null) {
+            return packaged;
+        }
         try {
             File git = new File(System.getProperty("user.dir", "."), ".git");
             File head = new File(git, "HEAD");
@@ -130,6 +136,30 @@ public final class BenchmarkEnvironment {
             // Best-effort local discovery only.
         }
         return "unknown";
+    }
+
+    private static String readPackagedCommitSha() {
+        InputStream stream = null;
+        try {
+            stream = BenchmarkEnvironment.class.getClassLoader()
+                .getResourceAsStream("reny-build.properties");
+            if (stream == null) {
+                return null;
+            }
+            Properties properties = new Properties();
+            properties.load(stream);
+            return firstNonBlank(properties.getProperty("commit_sha"));
+        } catch (IOException ignored) {
+            return null;
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException ignored) {
+                    // Best-effort packaged metadata discovery only.
+                }
+            }
+        }
     }
 
     private static String discoverKernel() {

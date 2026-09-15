@@ -26,6 +26,7 @@ public final class BenchmarkHarnessSelfTest {
         testWarmupIsolationAndExport();
         testRepeatedRunsDoNotOverwrite();
         testStateAndDurationValidation();
+        testCaptureOverflowIsRejected();
         System.out.println("BenchmarkHarnessSelfTest: " + passed + " tests passed");
     }
 
@@ -98,7 +99,8 @@ public final class BenchmarkHarnessSelfTest {
         check(!frameText.contains("1,1,"), "warmup frame excluded");
         check(tickText.contains(measuredTickId + "," + measuredFrameId + ",30000000"), "measured tick exported");
         check(summaryText.contains("\"sample_count\": 1"), "summary uses measured window");
-        check(summaryText.contains("\"schema_version\": 1"), "summary schema version");
+        check(summaryText.contains("\"schema_version\": 2"), "summary schema version");
+        check(summaryText.contains("\"complete\": true"), "formal capture completeness");
         check(summaryText.contains("\"actual_ms\": 1000.0"), "actual warmup persisted");
         check(summaryText.contains("\"actual_ms\": 2000.0"), "actual measurement persisted");
         check(environmentText.contains("\"commit_sha\": \"test-commit\""), "commit SHA persisted");
@@ -184,6 +186,40 @@ public final class BenchmarkHarnessSelfTest {
             earlyMeasurement = true;
         }
         check(earlyMeasurement, "configured measurement duration must be enforced");
+        pass();
+    }
+
+    private void testCaptureOverflowIsRejected() throws Exception {
+        ManualClock clock = new ManualClock(20_000L);
+        InternalProfiler profiler = new InternalProfiler(8, 8, 2);
+        BenchmarkSession session = new BenchmarkSession(
+            profiler,
+            BenchmarkScenario.STATIONARY_RENDER,
+            context(),
+            0L,
+            1L,
+            Files.createTempDirectory("reny-benchmark-overflow")
+                .toFile(),
+            clock);
+        session.startWarmup();
+        session.beginMeasurement();
+        profiler.recordFrameDurationNanos(1L, 1L, 1_000L);
+        profiler.recordFrameDurationNanos(2L, 2L, 1_000L);
+        profiler.recordFrameDurationNanos(3L, 3L, 1_000L);
+        profiler.recordTickDurationNanos(1L, 1L, 1_000L);
+        profiler.recordTickDurationNanos(2L, 2L, 1_000L);
+        profiler.recordTickDurationNanos(3L, 3L, 1_000L);
+        clock.advanceMillis(1L);
+        boolean rejected = false;
+        try {
+            session.finish();
+        } catch (IllegalStateException expected) {
+            rejected = expected.getMessage()
+                .contains("overflow/truncation");
+        } finally {
+            session.abort();
+        }
+        check(rejected, "capture overflow must invalidate the benchmark");
         pass();
     }
 

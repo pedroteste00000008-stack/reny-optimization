@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "status": "COMPLETE",
+  "formal_valid_runs": 80,
+  "formal_expected_runs": 80,
+  "formal_runs_per_cell": 5,
+  "repo": {
+    "branch": "issue-7-performance-baseline",
+    "commit_sha": "30d88b554addd4a610d6fe1efd319bda4b677635"
+  },
+  "runtime": {
+    "minecraft": "1.7.10",
+    "forge": "10.13.4.1614",
+    "java": "Temurin/OpenJDK 1.8.0_312",
+    "build_jdk": "Temurin 25.0.4.1",
+    "reny_jar": {
+      "filename": "renyoptimization-30d88b5.jar",
+      "sha256": "fcc579a5108810787198020f1d75a6ae1209a7e9da73b4af8bc2a39c8160de5b"
+    },
+    "unimixins": {
+      "filename": "unimixins-0.2.1-dev.jar",
+      "version": "0.2.1",
+      "sha256": "0910de6614a827a73dc38e857b56231cbedda8e42ac717136ce499ffcd243927"
+    },
+    "optimization_patches": "none"
+  },
+  "display": {
+    "resolution": "1280x720",
+    "render_distance_chunks": 8,
+    "vsync": false,
+    "fps_cap": 260,
+    "fps_cap_semantics": "uncapped Minecraft 1.7.10 maximum"
+  },
+  "minimal_workload": {
+    "world": "RenyBaseline00",
+    "seed": "170710",
+    "snapshot_hash": "sha256:ac8b69f23fa0da34e0b580a4f26a0c08d137dde938f262e173956a800e7c1002"
+  },
+  "heavy_workload": {
+    "source_instance": "Forja Industrial 1710",
+    "source_git_commit": "c8e06abab9515473c1d54dbdebc3b9ae890b4686",
+    "source_checkout_current_after_snapshot": "2dfadddcbe99e31a56eba8c57577eae745fe913a",
+    "source_checkout_current_status_after_snapshot": "clean; not used as a launch target",
+    "world": "New World",
+    "seed": "-7121280191151763024",
+    "isolated_config_hash": "sha256:27b1184c8c2671ccb6b855394a540255b878c498b38019e89d3b8bfd71d2db0b",
+    "shader": {
+      "filename": "Sildur's Enhanced Default v1.19 Fast.zip",
+      "sha256": "65969f5c7a381dfdd924cd1a07cfd5cfd9bf184a504ddd678abc147ccb314549"
+    }
+  },
+  "campaign": {
+    "accepted_formal_runs": 80,
+    "complete_cells": 16,
+    "runs_per_cell": 5,
+    "rejected_attempts_or_exports": 29,
+    "pilot_excluded_from_formal_count": true,
+    "optimization_patches": "none"
+  },
+  "pilot": {
+    "scenario": "BENCH-01",
+    "configuration": "A:minimal-shaders-off",
+    "run_id": "run-1789255640075-cb6862dc",
+    "result_dir": "benchmarks/results/BENCH-01/30d88b554addd4a610d6fe1efd319bda4b677635/run-1789255640075-cb6862dc",
+    "warmup_actual_ms": 60032.565314,
+    "measurement_actual_ms": 120024.46646,
+    "frame_p50_ms": 2.336099,
+    "frame_p95_ms": 5.241337,
+    "frame_p99_ms": 6.705806,
+    "tick_p50_ms": 2.839781,
+    "tick_p95_ms": 8.605056,
+    "tick_p99_ms": 16.247369
+  },
+  "evidence_policy": {
+    "raw_artifacts": "local benchmark-work/raw and benchmarks/results; not committed",
+    "formal_source": "terminal VALID campaign events filtered by exact commit",
+    "ranking": "data-derived from aggregate.json; exact subsystem and CPU/GPU attribution remain bounded by available instrumentation"
+  }
+}

@@ -156,6 +156,16 @@ public final class BenchmarkExporter {
             out.println("    \"configured_ms\": " + result.getConfiguredMeasurementMillis() + ',');
             out.println("    \"actual_ms\": " + millis(result.getActualMeasurementNanos()));
             out.println("  },");
+            out.println("  \"capture\": {");
+            out.println("    \"complete\": " + result.isCaptureComplete() + ',');
+            out.println("    \"truncated\": false,");
+            out.println(
+                "    \"frame_samples\": " + result.getFrames()
+                    .size() + ',');
+            out.println(
+                "    \"tick_samples\": " + result.getTicks()
+                    .size());
+            out.println("  },");
             writeFrameSummary(out, frame);
             out.println(',');
             writeTickSummary(out, tick);

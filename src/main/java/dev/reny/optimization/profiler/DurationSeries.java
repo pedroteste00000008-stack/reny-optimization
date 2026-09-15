@@ -16,6 +16,7 @@ final class DurationSeries {
     private int cursor;
     private int size;
     private long totalSamples;
+    private long droppedSamples;
     private volatile long publishedVersion;
 
     DurationSeries(int capacity) {
@@ -38,6 +39,8 @@ final class DurationSeries {
         cursor = (index + 1) % durationsNanos.length;
         if (size < durationsNanos.length) {
             size++;
+        } else {
+            droppedSamples++;
         }
         totalSamples++;
 
@@ -54,7 +57,8 @@ final class DurationSeries {
             int localCursor = cursor;
             int localSize = size;
             long localTotalSamples = totalSamples;
-            DurationSeriesSnapshot snapshot = copy(localCursor, localSize, localTotalSamples);
+            long localDroppedSamples = droppedSamples;
+            DurationSeriesSnapshot snapshot = copy(localCursor, localSize, localTotalSamples, localDroppedSamples);
             long after = publishedVersion;
             if (before == after && (after & 1L) == 0L) {
                 return snapshot;
@@ -70,7 +74,8 @@ final class DurationSeries {
             int localCursor = cursor;
             int localSize = size;
             long localTotalSamples = totalSamples;
-            DurationSeriesSnapshot snapshot = copy(localCursor, localSize, localTotalSamples);
+            long localDroppedSamples = droppedSamples;
+            DurationSeriesSnapshot snapshot = copy(localCursor, localSize, localTotalSamples, localDroppedSamples);
             long after = publishedVersion;
             if (before == after && (after & 1L) == 0L) {
                 return snapshot;
@@ -78,7 +83,8 @@ final class DurationSeries {
         }
     }
 
-    private DurationSeriesSnapshot copy(int localCursor, int localSize, long localTotalSamples) {
+    private DurationSeriesSnapshot copy(int localCursor, int localSize, long localTotalSamples,
+        long localDroppedSamples) {
         long[] copiedIds = new long[localSize];
         long[] copiedCorrelations = new long[localSize];
         long[] copiedDurations = new long[localSize];
@@ -93,6 +99,11 @@ final class DurationSeries {
             copiedCorrelations[i] = correlationIds[source];
             copiedDurations[i] = durationsNanos[source];
         }
-        return new DurationSeriesSnapshot(localTotalSamples, copiedIds, copiedCorrelations, copiedDurations);
+        return new DurationSeriesSnapshot(
+            localTotalSamples,
+            localDroppedSamples,
+            copiedIds,
+            copiedCorrelations,
+            copiedDurations);
     }
 }

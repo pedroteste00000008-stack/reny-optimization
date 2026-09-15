@@ -1,0 +1,107 @@
+{
+  "schema_version": 2,
+  "descriptor_id": "issue-7-baseline-0.0",
+  "runtime_policy": {
+    "minecraft": "1.7.10",
+    "forge": "10.13.4.1614",
+    "resolution": "1280x720",
+    "render_distance_chunks": 8,
+    "vsync": false,
+    "fps_cap": 260,
+    "fps_cap_semantics": "Minecraft 1.7.10 slider maximum; uncapped",
+    "mouse_sensitivity": 0.5,
+    "sprint": false,
+    "weather": "clear",
+    "time_policy": "preserve the designated saved-world time; record world_time_ticks in every export",
+    "camera_policy": "preserve the designated saved-world yaw/pitch; no mouse input during warmup or measurement",
+    "input_policy": "inject only the benchmark command; BENCH-02 additionally holds W after MEASURING begins"
+  },
+  "scenarios": [
+    {
+      "id": "BENCH-01",
+      "name": "Stationary render",
+      "scene_identity": "minimal RenyBaseline00 or heavy New World snapshot at the designated start route",
+      "start_route": {
+        "minimal": "x=-3.421,y=73.620,z=-167.091,yaw=0.150,pitch=-14.550",
+        "heavy": "x=168.300,y=62.620,z=760.511,yaw=111.662,pitch=48.450"
+      },
+      "movement": "stationary; no movement or camera input",
+      "purpose": "renderer baseline and static-scene frame-time distribution"
+    },
+    {
+      "id": "BENCH-02",
+      "name": "Chunk traversal",
+      "scene_identity": "same designated snapshot and start route as BENCH-01; traversal is the only changing input",
+      "start_route": {
+        "minimal": "x=-3.421,y=73.620,z=-167.091,yaw=0.150,pitch=-14.550",
+        "heavy": "x=168.300,y=62.620,z=760.511,yaw=111.662,pitch=48.450"
+      },
+      "movement": "hold W from the MEASURING transition through completion; sprint disabled",
+      "movement_speed": "Minecraft default walking speed with mouseSensitivity=0.5",
+      "camera": "fixed start yaw/pitch; no mouse input",
+      "purpose": "chunk streaming, generation, lighting, meshing, upload, and I/O"
+    },
+    {
+      "id": "BENCH-03",
+      "name": "Industrial base",
+      "scene_identity": "heavy New World industrial/magic snapshot; minimal RenyBaseline00 is an explicitly non-equivalent proxy",
+      "start_route": {
+        "minimal": "x=-3.421,y=73.620,z=-167.091,yaw=0.150,pitch=-14.550",
+        "heavy": "x=168.300,y=62.620,z=760.511,yaw=111.662,pitch=48.450"
+      },
+      "movement": "stationary; no movement or camera input",
+      "purpose": "TileEntity, Forge-event, machine-network, and complex-block pressure"
+    },
+    {
+      "id": "BENCH-06",
+      "name": "Shader torture",
+      "scene_identity": "same designated snapshot at a water/foliage/sky-facing route; shader pack identity is hashed in runtime-manifest.json",
+      "start_route": {
+        "minimal": "x=-3.421,y=73.620,z=-167.091,yaw=0.150,pitch=-14.550",
+        "heavy": "x=168.300,y=62.620,z=760.511,yaw=111.662,pitch=48.450"
+      },
+      "movement": "stationary; no movement or camera input",
+      "shader_policy": "only B and D enable the exact Sildur pack; A and C retain OptiFine with shaderPack empty",
+      "purpose": "expensive shader passes and CPU/GPU renderer interaction"
+    }
+  ],
+  "configuration_matrix": {
+    "A": {
+      "id": "minimal-optifine-shaders-off",
+      "world": "RenyBaseline00",
+      "seed": "170710",
+      "optifine": "OptiFine_1.7.10_HD_U_E7",
+      "shader": "none"
+    },
+    "B": {
+      "id": "minimal-optifine-shaders-on",
+      "world": "RenyBaseline00",
+      "seed": "170710",
+      "optifine": "OptiFine_1.7.10_HD_U_E7",
+      "shader": "Sildur's Enhanced Default v1.19 Fast.zip"
+    },
+    "C": {
+      "id": "heavy-optifine-shaders-off",
+      "world": "New World",
+      "seed": "-7121280191151763024",
+      "optifine": "OptiFine_1.7.10_HD_U_E7",
+      "shader": "none"
+    },
+    "D": {
+      "id": "heavy-optifine-shaders-on",
+      "world": "New World",
+      "seed": "-7121280191151763024",
+      "optifine": "OptiFine_1.7.10_HD_U_E7",
+      "shader": "Sildur's Enhanced Default v1.19 Fast.zip"
+    }
+  },
+  "run_policy": {
+    "warmup_seconds": 60,
+    "measurement_seconds": 120,
+    "independent_runs_per_cell": 5,
+    "cells": 16,
+    "expected_formal_runs": 80,
+    "reset_policy": "restore the exact world snapshot and profile files before every run; archive shutdown snapshots separately",
+    "capture_policy": "formal results use the append-only profiler capture; any capture overflow or truncation invalidates the attempt"
+  }
+}

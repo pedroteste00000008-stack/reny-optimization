@@ -1,0 +1,9 @@
+{
+  "required": false,
+  "minVersion": "0.8.7",
+  "package": "dev.reny.optimization.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [],
+  "server": []
+}

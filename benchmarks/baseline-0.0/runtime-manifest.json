@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "status": "COMPLETE",
+  "tested_commit_sha": "30d88b554addd4a610d6fe1efd319bda4b677635",
+  "target": {
+    "curseforge_instance": "Reny Optimization",
+    "path": "/home/pedro/Documents/curseforge/minecraft/Instances/Reny Optimization",
+    "minecraft": "1.7.10",
+    "forge": "10.13.4.1614"
+  },
+  "runtime": {
+    "java": "Temurin/OpenJDK 1.8.0_312",
+    "build_jdk": "Temurin 25.0.4.1",
+    "reny": {
+      "filename": "renyoptimization-30d88b5.jar",
+      "sha256": "fcc579a5108810787198020f1d75a6ae1209a7e9da73b4af8bc2a39c8160de5b"
+    },
+    "unimixins": {
+      "filename": "unimixins-0.2.1-dev.jar",
+      "version": "0.2.1",
+      "sha256": "0910de6614a827a73dc38e857b56231cbedda8e42ac717136ce499ffcd243927",
+      "source": "io.github.legacymoddingmc:unimixins:0.2.1 runtime dependency"
+    },
+    "optimization_patches": "none"
+  },
+  "display": {
+    "resolution": "1280x720",
+    "render_distance_chunks": 8,
+    "vsync": false,
+    "fps_cap": 260,
+    "fps_cap_semantics": "uncapped Minecraft 1.7.10 maximum"
+  },
+  "configurations": {
+    "A": {
+      "id": "minimal-shaders-off",
+      "profile": "benchmark-work/profiles/minimal-runtime-template",
+      "world": "RenyBaseline00",
+      "seed": "170710",
+      "world_snapshot_sha256": "ac8b69f23fa0da34e0b580a4f26a0c08d137dde938f262e173956a800e7c1002",
+      "shader": "none",
+      "optifine": false
+    },
+    "B": {
+      "id": "minimal-shaders-on",
+      "profile": "minimal-runtime-template plus isolated OptiFine/shader files",
+      "world": "RenyBaseline00",
+      "seed": "170710",
+      "shader": "Sildur's Enhanced Default v1.19 Fast.zip",
+      "optifine": true
+    },
+    "C": {
+      "id": "heavy-shaders-off",
+      "profile": "benchmark-work/profiles/the-reawakening",
+      "source_instance": "/home/pedro/Documents/curseforge/minecraft/Instances/Forja Industrial 1710",
+      "source_git_commit": "c8e06abab9515473c1d54dbdebc3b9ae890b4686",
+      "source_checkout_current_after_snapshot": "2dfadddcbe99e31a56eba8c57577eae745fe913a",
+      "source_checkout_current_status_after_snapshot": "clean; not used as a launch target",
+      "world": "New World",
+      "seed": "-7121280191151763024",
+      "isolated_config_sha256": "27b1184c8c2671ccb6b855394a540255b878c498b38019e89d3b8bfd71d2db0b",
+      "shader": "none",
+      "optifine": true,
+      "loaded_fml_mod_count": 72
+    },
+    "D": {
+      "id": "heavy-shaders-on",
+      "profile": "benchmark-work/profiles/the-reawakening",
+      "source_instance": "/home/pedro/Documents/curseforge/minecraft/Instances/Forja Industrial 1710",
+      "source_git_commit": "c8e06abab9515473c1d54dbdebc3b9ae890b4686",
+      "source_checkout_current_after_snapshot": "2dfadddcbe99e31a56eba8c57577eae745fe913a",
+      "source_checkout_current_status_after_snapshot": "clean; not used as a launch target",
+      "world": "New World",
+      "seed": "-7121280191151763024",
+      "isolated_config_sha256": "27b1184c8c2671ccb6b855394a540255b878c498b38019e89d3b8bfd71d2db0b",
+      "shader": "Sildur's Enhanced Default v1.19 Fast.zip",
+      "shader_sha256": "65969f5c7a381dfdd924cd1a07cfd5cfd9bf184a504ddd678abc147ccb314549",
+      "optifine": {
+        "filename": "OptiFine_1.7.10_HD_U_E7.jar",
+        "sha256": "8bcd9d83de001a0591f498105f369f070c47d2c9192774d5a5b69f646e44fab4"
+      },
+      "loaded_fml_mod_count": 72
+    }
+  },
+  "campaign": {
+    "formal_matrix": "4 scenarios x 4 configurations x 5 independent runs",
+    "scenarios": ["BENCH-01", "BENCH-02", "BENCH-03", "BENCH-06"],
+    "formal_runs_accepted": 80,
+    "cells_complete": 16,
+    "warmup_seconds": 60,
+    "measurement_seconds": 120,
+    "pilot": "BENCH-01 A, separate and excluded from formal count"
+  },
+  "safety": {
+    "heavy_source_untouched": true,
+    "raw_results_local_only": true,
+    "source_event_log": "benchmark-work/campaign-runner.jsonl",
+    "aggregate_outputs": ["aggregate.csv", "aggregate.json", "rejections.json"]
+  }
+}
